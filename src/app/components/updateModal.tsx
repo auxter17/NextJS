@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const UpdateModal = ({ onClose }) => {
+const UpdateModal = ({ onClose, fetchUsers }) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -16,13 +16,15 @@ const UpdateModal = ({ onClose }) => {
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/users`, {
-        method: "PUT", // PATCH is more commonly used for updates
+        method: "PUT", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({id, name, username, password }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update user");
+
+      fetchUsers()
 
       alert("User updated successfully!");
       onClose();

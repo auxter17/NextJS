@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, fetchUsers  }) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +20,7 @@ const Modal = ({ onClose }) => {
         body: JSON.stringify({ name, username, password }),
       });
 
+      fetchUsers()
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create user");
 

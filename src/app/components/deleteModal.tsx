@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, fetchUsers }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,6 +18,8 @@ const Modal = ({ onClose }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({username, password }),
       });
+
+      fetchUsers()
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to delete user");

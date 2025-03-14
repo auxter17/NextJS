@@ -12,11 +12,15 @@ export default function Home() {
   const [deleteModalOpen ,deleteIsModalOpen] = useState(false);
   const [updateModalOpen ,updateIsModalOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchUsers = () => {
     fetch('http://localhost:3000/users')
       .then((res) => res.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error('Error fetching users:', error));
+  }
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   return (
@@ -32,7 +36,7 @@ export default function Home() {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
+            <tr key={user.id} className="hover:border-[5px]">
               <td className="border border-gray-300 p-2">{user.id}</td>
               <td className="border border-gray-300 p-2">{user.name}</td>
               <td className="border border-gray-300 p-2">{user.username}</td>
@@ -46,9 +50,9 @@ export default function Home() {
           <button onClick={() => deleteIsModalOpen(true)} className='border-[1px] p-2 rounded hover:bg-white hover:text-black'>DELETE USER</button>
           <button onClick={() => updateIsModalOpen(true)} className='border-[1px] p-2 rounded hover:bg-white hover:text-black'>UPDATE USER</button>
       </div>
-      {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
-      {deleteModalOpen && <DeleteModal onClose={() => deleteIsModalOpen(false)} />}
-      {updateModalOpen && <UpdateModal onClose={() => updateIsModalOpen(false)} />}
+      {isModalOpen &&  <Modal onClose={() => setIsModalOpen(false)} fetchUsers={fetchUsers} />}
+      {deleteModalOpen && <DeleteModal onClose={() => deleteIsModalOpen(false)}  fetchUsers={fetchUsers} />}
+      {updateModalOpen && <UpdateModal onClose={() => updateIsModalOpen(false)}  fetchUsers={fetchUsers} />}
     </div>
   );  
   
